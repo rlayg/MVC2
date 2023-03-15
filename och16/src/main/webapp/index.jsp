@@ -8,7 +8,9 @@
 </head>
 <body>
 <script type="text/javascript">
+	//index.jsp가 처음 시작하는거
 	location.href="list.do";
+	//location.href="content.do";
 </script>
 </body>
 </html>

@@ -39,22 +39,24 @@ public class Controller extends HttpServlet {
 	/**
 	 * @see Servlet#init(ServletConfig)
 	 */
+    //                             /WEB-INF/command.properties
 	public void init(ServletConfig config) throws ServletException {
-		// 초기화 작업
+		// 초기화 작업, 일생에 단 한번 하는거
 		// web.xml에서 propertyConfig에 해당하는 init-param의 값을 읽어옴
 		String props = config.getInitParameter("config");
 		// /WEB-INF/command.properties
-		System.out.println("1. init String props => " + props); // /ch16/com
+		System.out.println("1. init String props => " + props); // /ch16/com / props이 여기까지는 String 이야
 		
-		Properties		pr = new Properties();
-		FileInputStream f = null;
+		Properties		pr = new Properties();		//여기서 파일로 만들어줘
+		FileInputStream f = null;					//여기서 파일로 만들어줘
+		
 		
 		try {
-			String configFilePath = config.getServletContext().getRealPath(props);
+			String configFilePath = config.getServletContext().getRealPath(props);		//여기서 톰캣서버로 바뀜
 			System.out.println("2. init String configFilePath => " + configFilePath); // /ch16
 			f = new FileInputStream(configFilePath);
 			// Memory Up
-			pr.load(f);
+			pr.load(f);			//메모리로 올라가
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -67,7 +69,9 @@ public class Controller extends HttpServlet {
 	
 				}
 		}
-		//		/list.do / content.do
+		//		/ list.do - service.ListAction
+		//		/content.do=service.ContentAction
+		//		/list.do / content.do -키셋이 이렇게 두개(아직 2개밖에 안해서 그런듯 더 하면 더늘수도)
 		Iterator keyIter = pr.keySet().iterator();
 		
 		while(keyIter.hasNext()) {
@@ -82,12 +86,12 @@ public class Controller extends HttpServlet {
 			// Class commandClass		= Class.forName(className);
 			// Object commandInstance	= commandClass.newInstance();
 				// new Class	--> 제네릭의 요점은 클래스 유형을 모른다
-				Class<?> commandClass = Class.forName(className); //해당 문자열을 클래스로 만든다.
+				Class<?> commandClass = Class.forName(className); //해당 문자열을 진짜 클래스로 만든다.
 				CommandProcess commandInstance =
 						(CommandProcess)commandClass.getDeclaredConstructor().newInstance();
 				
-				//		list.do		service.ListAction
-				//		content.do	service.ContentAction
+				//	 			list.do		service.ListAction
+				//				content.do	service.ContentAction
 				
 				commandMap.put(command, commandInstance);
 				
@@ -119,14 +123,14 @@ public class Controller extends HttpServlet {
 		CommandProcess com  = null;
 		String command		= request.getRequestURI();
 		System.out.println("1. requestServletPro command => " + command); //och16/list.do
-		command = command.substring(request.getContextPath().length());
+		command = command.substring(request.getContextPath().length()); // 프로젝트 명을 잘라내는 과정이다 /och16 잘라내는 과정
 		System.out.println("2. requestServletPro command substring => " + command); // /och16
 		
 		try {
 			//	service.ListAction Instance
 			com = (CommandProcess) commandMap.get(command);
 			System.out.println("3. requestServletPro command => " + command); // /och16/com
-			System.out.println("4. requestServletPro command => " + com); // /och16/com
+			System.out.println("4. requestServletPro com => " + com); // /och16/com 해시코드다
 			//	com --> service.ListAction@32a22787
 			view = com.requestPro(request, response);
 			System.out.println("5. requestServletPro view => " + view); // /ch16/com
