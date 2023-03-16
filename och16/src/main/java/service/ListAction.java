@@ -14,7 +14,7 @@ public class ListAction implements CommandProcess {
 
 	@Override
 	public String requestPro(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("ListAction Service start...");
+		System.out.println("ListAction Service start..."); //controller 지시를 받고 시작함
 		BoardDao bd = BoardDao.getInstance();
 		
 		try {
@@ -36,7 +36,7 @@ public class ListAction implements CommandProcess {
 			//	Board 조회						1		10
 			List<Board> list = bd.boardList(startRow, endRow);
 			//								 		37	/	10
-			int pageCnt = (int)Math.ceil((double)totCnt/pageSize);	//4  / 31개라도 4페이지 나와야해 그래서 ceil
+			int pageCnt = (int)Math.ceil((double)totCnt/pageSize);	//4  / 한페이지라도 10개씩 보여줘. 31개라도 4페이지 나와야해 그래서 ceil
 			//						1
 			int startPage = (int)(currentPage-1)/blockSize*blockSize + 1;	//1 / currentPage-1을 blockSize로 나눈 후, 정수형으로 형변환합니다 이를 다시 blockSize와 곱하고 1을 더합니다.
 																			//    이렇게 하면 currentPage가 속한 블록의 첫 번째 페이지 번호가 계산됩니다.

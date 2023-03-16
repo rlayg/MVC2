@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-    
+   
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,13 +37,15 @@
 	 					<td>${startNum }</td>
 	 					<td class="left" width=200>
 	 						<c:if test="${board.readcount > 20 }">
-	 							<img src="images/hot.gif" onmouseover="getDeptName(${board.num})">
+	 							<img src="images/hot.gif" onmouseover="getDeptName(${board.num})"> <!-- onmouseover는 아작스로 하려햇는데 나안했데그냥 -->
 	 						</c:if>
 	 						<c:if test="${board.re_level > 0 }">
 	 							<img src="images/level.gif" width="${board.re_level*10 }">
 	 							<img src="images/re.gif">
 	 						</c:if>
-	 						<a href="content.do?num=${board.num}&pageNum=${currentPage}">${board.subject }</a>
+	 						<a href="content.do?num=${board.num}&pageNum=${currentPage}">${board.subject }</a> <!--게시글 누르면 content.do?로 간다   / 
+	 																											pageNum=${currentPage}을 가져가는 이유 : 3페이지에서 글 보고 뒤로가기 누르면 다시 3페이지 나오게, 복원력이 있어야해 그걸 한거 
+	 																											num과 pageNum을 파라미터로 가져간다-->
 	 					</td>
 	 					<td>${board.writer}</td>
 	 					<td><a href="mailto:${board.email}">${board.email}</a><td>
