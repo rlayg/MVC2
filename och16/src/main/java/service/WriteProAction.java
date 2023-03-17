@@ -45,7 +45,7 @@ public class WriteProAction implements CommandProcess {
 			request.setAttribute("pageNum", pageNum);
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("WriteProAction e.getMessage() --> " + e.getMessage());
 		}
 		
 		return "writePro.jsp";

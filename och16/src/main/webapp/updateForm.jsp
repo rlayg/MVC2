@@ -9,7 +9,7 @@
 </head>
 <body>
 	<form action="updatePro.do" method="post">
-		<input type="hidden" name="num" 	value="${board.num }">
+		<input type="hidden" name="num" 	value="${board.num }">	<!-- 수정하면 안되는데 가져가긴 해야해 -> hidden으로 한다 -->
 		<input type="hidden" name="pageNum" value="${pageNum}">
 		<table border="1">
 			<caption><h2>게시판 수정</h2></caption>

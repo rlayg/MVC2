@@ -289,7 +289,7 @@ public class BoardDao {
 	}
 
 	public int insert(Board board) throws SQLException {
-		
+		// 여기에 댓글쓰기도 같이 넣음 근데 이건 사람 취향. 근데 ref sept level은 필수
 		int num = board.getNum();
 		int result = 0;
 		Connection conn = null;
@@ -298,10 +298,18 @@ public class BoardDao {
 		
 		String sql1 = "select nvl(max(num), 0) from board";	// 방법1 Max방법, seq방법(시퀸스)은 spring에서 해본데
 		String sql = "insert into board values(?,?,?,?,?,?,?,?,?,?,?,sysdate)";
+//		String sq9 = "insert into board values((select nvl(max(num), 0) from board) "
+//												+ ",?,?,?,?,?,?,?,?,?,?,?,sysdate)"; //위 sql 2개 합한거 근데 뭔가 오류뜨면 원본 보기
+		
+		// 홍해의 기적 - 댓글관련 sql
+		String sql2 = "update board set re_step = re_step+1 where ref=? and re_step > ?";
+		
+		
 		
 		
 		try {
 			conn = getConnection();
+			// 신규글 --> sql1 (PK ->num도출) num도출이 목적
 			pstmt = conn.prepareStatement(sql1); // sql1을 먼저 넣어준데
 			rs = pstmt.executeQuery();
 			rs.next();
@@ -311,12 +319,33 @@ public class BoardDao {
 			rs.close();
 			pstmt.close(); // sql 2개자나 먼저 넣은 sql 닫는거 안엉키게
 			
+			
+			
 			// 댓글 -->sql2
+			if(num != 0) {
+				System.out.println("BoardDAO insert 댓글 sql2 -> " + sql2);
+				System.out.println("BoardDAO insert 댓글 board.getRef() -> " + board.getRef());
+				System.out.println("BoardDAO insert 댓글 board.getRe_step() -> " + board.getRe_step());
+				pstmt = conn.prepareStatement(sql2);
+				pstmt.setInt(1, board.getRef());
+				pstmt.setInt(2, board.getRe_step());
+				pstmt.executeQuery();
+				pstmt.close();
+				
+				//댓글 관련 정보
+				board.setRe_step(board.getRe_step()+1);
+				board.setRe_level(board.getRe_level()+1);
+				
+			}
+			
 			
 			
 			
 			//신규글
-			if(num == 0) board.setRef(number);
+			//if(num == 0) board.setRef(number); // 신규글은 레퍼런스 맞춰주는거야
+			if(num == 0) {
+				board.setRef(number); // 신규글은 레퍼런스 맞춰주는거야
+			}
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, number);   // MAX + 1
 			pstmt.setString(2, board.getWriter());
@@ -401,7 +430,66 @@ public class BoardDao {
 		return result;	
 	} 
 		*/
-	}	
+	}
+
+	public int delete(int num, String passwd) throws SQLException {
+		int result = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;	// sql1의 select을 하기 위해 있는것같아
+		
+		String sql1 = "select passwd from board where num = ?";
+		String sql = "delete from board where num = ?";
+		
 	
-	
+				
+		try {
+			String dbPasswd = "";
+			conn = getConnection();
+			pstmt = conn.prepareStatement(sql1);
+			pstmt.setInt(1, num);
+			
+			rs = pstmt.executeQuery();
+			
+			
+			
+			if(rs.next()) {
+				dbPasswd = rs.getString(1);
+				if(dbPasswd.equals(passwd)) {
+					rs.close();
+					pstmt.close();
+					pstmt = conn.prepareStatement(sql);
+					pstmt.setInt(1, num);
+					result = pstmt.executeUpdate();
+				} else {
+					result = 0;
+				}
+			} else {
+				result = -1;
+			}
+			
+			if(result > 0) {
+				System.out.println("dbPasswd.equals(passwd) 같음");
+			} else if(result == 0) {
+				System.out.println("dbPasswd.equals(passwd) 다름");
+			} else {
+				System.out.println("ResultSet rs에 글이 없어");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("delete e.getMessage()" + e.getMessage());
+		} finally {
+			if(pstmt != null) {
+				pstmt.close();
+			}
+			if(conn != null) {
+				conn.close();
+			}
+		}
+		
+		return result;
+	}
+
+
 }

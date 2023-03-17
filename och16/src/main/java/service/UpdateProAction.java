@@ -51,7 +51,7 @@ public class UpdateProAction implements CommandProcess {
 			
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("UpdateProAction e.getMessage() --> " + e.getMessage());
 		}
 		
 		// 6. updatePro.jsp Return

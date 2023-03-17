@@ -34,7 +34,7 @@ public class ContentAction implements CommandProcess {
 			request.setAttribute("pageNum", pageNum);
 			request.setAttribute("board", board);    
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("ContentAction e.getMessage --> " + e.getMessage());
 		}
 		
 		// View

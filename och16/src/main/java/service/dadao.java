@@ -13,6 +13,36 @@ import dao.Board;
 public class dadao {
 
 	public Board select(int num) throws SQLException {
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		Connection conn = null;    
 		Statement stmt = null;		
 		ResultSet rs = null;
@@ -59,7 +89,7 @@ public class dadao {
 			
 			*/
 			
-			if(rs.next()) {		//next는 boolean을 반환
+			if(rs.next()) {									//next는 boolean을 반환
 				board.setNum(rs.getInt("num"));				//set에서 가져온 int타입 컬럼명 or 컬럼번호를 넣고 dto에 저장
 				board.setWriter(rs.getString("writer"));		
 				board.setSubject(rs.getString("subject"));
@@ -76,9 +106,6 @@ public class dadao {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
-			if(rs != null) rs.close();
-			if(stmt != null) stmt.close();
-			if(conn != null) conn.close();
 		}
 		return board;
 	}
@@ -169,9 +196,6 @@ public class dadao {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		} finally {
-			if(rs != null) rs.close();
-			if(pstmt != null) pstmt.close();
-			if(conn != null) conn.close();
 		}
 		return list;
 	}

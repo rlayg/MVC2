@@ -17,9 +17,6 @@ public class UpdateFormAction implements CommandProcess {
 		int num = Integer.parseInt(request.getParameter("num"));
 		String pageNum = request.getParameter("pageNum");
 		
-		
-		
-		
 		try {
 		// 2. BoardDao bd Instance
 			BoardDao bd = BoardDao.getInstance();
@@ -31,9 +28,8 @@ public class UpdateFormAction implements CommandProcess {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("UpdateFormAction e.getMessage --> " + e.getMessage());
 		}
-		
-		
 		
 		return "updateForm.jsp";
 	}

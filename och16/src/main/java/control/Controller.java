@@ -96,8 +96,8 @@ public class Controller extends HttpServlet {
 				commandMap.put(command, commandInstance);   // 여기에 command.properties의 키,값이 들어간다
 				
 			} catch (Exception e) {
-				// TODO: handle exception
 				e.printStackTrace();
+				System.out.println("init e.getMessage --> " + e.getMessage());
 			}
 		}
 	}

@@ -40,7 +40,7 @@ public class WriteFormAction implements CommandProcess {
 			 request.setAttribute("pageNum", pageNum);
 			
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("WriteFormAction e.getMessage() --> " +  e.getMessage());
 		}
 		
 		return "writeForm.jsp";
